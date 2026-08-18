@@ -44,9 +44,12 @@ jobs:
       - name: Gitleaks Secret Scan
         run: gitleaks detect --source . --no-banner
 
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+        working-directory: environment/dev
+
       - name: Upload Terraform Plan
         uses: actions/upload-artifact@v4
         with:
           name: terraform-plan
           path: environment/dev/tfplan
-          working-directory: environment/dev
