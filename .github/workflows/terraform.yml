@@ -38,6 +38,9 @@ jobs:
         run: tflint
         working-directory: environment/dev
 
+      - name: Checkov Security Scan
+        run: checkov -d environment/dev
+
       - name: Terraform Plan
         run: terraform plan -out=tfplan
         working-directory: environment/dev
