@@ -41,6 +41,9 @@ jobs:
       - name: Checkov Security Scan
         run: checkov -d environment/dev
 
+      - name: Gitleaks Secret Scan
+        run: gitleaks detect --source . --no-banner
+        
       - name: Terraform Plan
         run: terraform plan -out=tfplan
         working-directory: environment/dev
