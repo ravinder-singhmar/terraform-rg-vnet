@@ -5,4 +5,5 @@ module "rg" {
 module "vnet" {
   source      = "../../modules/azurerm_virtual_network"
   vnetdetails = var.vnetdetails
+  depends_on  = [module.rg]
 }

@@ -53,3 +53,35 @@ jobs:
         with:
           name: terraform-plan
           path: environment/dev/tfplan
+
+  terraform-apply:
+    name: Terraform Apply
+    runs-on: self-hosted
+    needs: terraform
+
+    # Apply ONLY after successful push to main
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    environment:
+      name: production
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Download Terraform Plan Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: terraform-plan
+          path: environment/dev
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: environment/dev
+
+      - name: Terraform Apply
+        run: terraform apply tfplan
+        working-directory: environment/dev
