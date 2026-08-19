@@ -58,6 +58,10 @@ jobs:
     name: Terraform Apply
     runs-on: self-hosted
     needs: terraform
+
+    # Apply ONLY after successful push to main
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
     environment:
       name: production
 
@@ -79,5 +83,5 @@ jobs:
         working-directory: environment/dev
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
+        run: terraform apply tfplan
         working-directory: environment/dev
